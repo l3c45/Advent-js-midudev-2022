@@ -33,3 +33,37 @@
 //     giftsCities.length >= 1
 //     maxCities >= 1
 //     El número de maxCities puede ser mayor a giftsCities.length
+
+function getMaxGifts(giftsCities, maxGifts, maxCities) {
+  if (maxGifts < 1 || giftsCities < 1 || maxCities < 1) return 0;
+
+  const r = giftsCities
+    .sort((a, b) => b - a)
+    .filter((item) => item <= maxGifts);
+
+  if (r.length === 0) return 0;
+  if (maxCities === 1) return r[0];
+  if (maxCities > 10) return r.reduce((acc, val) => acc + val, 0);
+
+  let q = maxCities - 1;
+  let arr = [];
+
+  const itera = (loops) => {
+    let inicio = r[0];
+
+    for (let j = 1; j < r.length; j++) {
+      if (loops >= 2) {
+        arr.push(inicio + r[j] + r[j + 1])
+      } else {
+        arr.push(inicio + r[j]);
+      }
+    }
+  };
+
+  for (let i = 1; i <= q; i++) {
+    itera(i);
+  }
+
+  return arr.filter((item) => item <= maxGifts).sort((a, b) => b - a)[0];
+}
+
