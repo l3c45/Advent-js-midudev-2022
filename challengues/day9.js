@@ -37,28 +37,14 @@
 //     El array puede tener cualquier longitud.
 //     Si todos los leds están encendidos, el tiempo es 0.
 const l = [0, 0, 0, 0, 1, 1, 0, 1, 0, 0];
-const m = [0, 1, 1, 1, 0];
-const n = [0, 1, 1, 0, 1];
+const m = [0, 1, 0, 1, 0, 0, 0];
+const n = [1];
 
 function countTime(leds) {
-  if (leds.length === 0) return 0;
-  const a = leds.reduce((acc, val, i, arr) => {
-    if (val === 1 && arr[i - 1] === 1) {
-      return acc;
-    } else {
-      acc.push(val);
-      return acc;
-    }
-  }, []);
-
-  if (a.indexOf(1) === a.lastIndexOf(1)) {
-    return (a.length - 1) * 7;
-  } else {
-    return (
-      a
-        .join("")
-        .split("1")
-        .sort((a, b) => (a.length > b.length ? -1 : 1))[0].length * 7
-    );
-  }
+  const lastOne = leds.lastIndexOf(1);
+  const lastZeros = leds.splice(lastOne + 1);
+  const sorted = [...lastZeros, ...leds].join("").split("1");
+  const length = sorted.map((item) => item.length);
+  const max = Math.max(...length);
+  return max * 7;
 }
